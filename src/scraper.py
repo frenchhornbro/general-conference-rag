@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import os
 import re
 import time
 import logging
@@ -12,7 +13,10 @@ from urllib3.util.retry import Retry
 import json
 
 with open("config.json") as config:
-    years = json.load(config)["years"]
+    c = json.load(config)
+    years = c["years"]
+    raw_dir = c["raw_dir"]
+os.makedirs(raw_dir, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -189,6 +193,6 @@ if __name__ == "__main__":
     # Save to CSV
     talks_df = pd.DataFrame(talks_data)
     paragraphs_df = pd.DataFrame(paragraphs_data)
-    talks_df.to_csv('SCRAPED_TALKS.csv', index=False)
-    paragraphs_df.to_csv('SCRAPED_PARAGRAPHS.csv', index=False)
+    talks_df.to_csv(f'{raw_dir}/SCRAPED_TALKS.csv', index=False)
+    paragraphs_df.to_csv(f'{raw_dir}/SCRAPED_PARAGRAPHS.csv', index=False)
     print("End Time:", datetime.now().strftime("%H:%M:%S"))
