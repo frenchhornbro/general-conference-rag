@@ -11,13 +11,12 @@ import os
 with open("config.json") as config:
   c = json.load(config)
   embeddings_dir = c["embeddings_dir"]
-  output_dir = c["clusters_dir"]
-  os.makedirs(output_dir, exist_ok=True)
+  os.makedirs(f"{embeddings_dir}/clusters", exist_ok=True)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def cluster_paragraph_embeddings(csv_file, k, prefix, output_prefix):
+def cluster_paragraph_embeddings(csv_file, k, prefix):
   """
   Generate k cluster embeddings per talk from paragraph embeddings by clustering paragraphs
   within each talk and using cluster centroids as the new embeddings.
@@ -31,7 +30,7 @@ def cluster_paragraph_embeddings(csv_file, k, prefix, output_prefix):
   """
   try:
     # Load the paragraph embeddings CSV
-    open_file = os.path.join(f"{embeddings_dir}/{prefix}", csv_file)
+    open_file = os.path.join(embeddings_dir, prefix, csv_file)
     df = pd.read_csv(open_file)
     logging.info(f"Loaded CSV with {len(df)} paragraphs")
 
@@ -98,8 +97,8 @@ def cluster_paragraph_embeddings(csv_file, k, prefix, output_prefix):
     cluster_df = pd.DataFrame(cluster_data)
 
     # Save to CSV
-    output_file = prefix + '_' + str(k) + '_clusters.csv'
-    cluster_df.to_csv(os.path.join(output_prefix, output_file), index=False)
+    output_file = f"{embeddings_dir}/clusters/{prefix}_{str(k)}_clusters.csv"
+    cluster_df.to_csv(output_file, index=False)
     logging.info(f"Cluster embeddings saved to {output_file}")
 
     return cluster_df
@@ -111,6 +110,6 @@ def cluster_paragraph_embeddings(csv_file, k, prefix, output_prefix):
 # Execute the clustering
 if __name__ == "__main__":
   print("Start paragraphs:", datetime.now().strftime("%H:%M:%S"))
-  cluster_paragraph_embeddings("paragraph.csv", 3, "free", output_dir)
-  # cluster_paragraph_embeddings("openai_paragraphs.csv", 3, "openai") # TODO: Fill this in
+  cluster_paragraph_embeddings("paragraph.csv", 3, "free")
+  cluster_paragraph_embeddings("paragraph.csv", 3, "openai")
   print("Finish:", datetime.now().strftime("%H:%M:%S"))
