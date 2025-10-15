@@ -1,0 +1,6 @@
+{
+  "years": 7,
+  "raw_dir": "raw",
+  "embeddings_dir": "embeddings",
+  "openAIKey": "add_key_here"
+}
