@@ -88,7 +88,7 @@ def cluster_paragraph_embeddings(csv_file, k, prefix):
           'embedding': cluster_centroid.tolist()
         })
 
-    # logging.info(f"Generated {k} cluster embeddings for talk: {talk_info['title']} ({talk_url})")
+    logging.info(f"Generated {k} cluster embeddings for talk: {talk_info['title']} ({talk_url})")
 
     # Create DataFrame for cluster embeddings
     if not cluster_data:

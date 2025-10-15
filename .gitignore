@@ -3,3 +3,4 @@ raw
 embeddings
 clusters
 temp*
+__pycache__
