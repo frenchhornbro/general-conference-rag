@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
-from utils.openai import generate_embeddings_openai
+from generate_embeddings.utils.openai import generate_embeddings_openai
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(levelname)s - %(message)s')
 pd.set_option('display.max_colwidth', None)
@@ -60,29 +60,38 @@ def find_closest(query_embedding, embedding_type, csv_name, num_results=3):
   else:
     raise RuntimeError("Type must be specified")
 
+def get_cols(df, cols):
+  ret = ""
+  for _, row in df.iterrows():
+    for col in cols:
+      ret += f"{col}: {row[col]}\n"
+    ret += "\n"
+  return ret
+
 if __name__ == "__main__":
   query = input("Enter your query: ")
-  cols = ['title', 'season', 'year', 'text', 'similarity']
+  paragraph_cols = ['title', 'season', 'year', 'text', 'similarity']
+  talk_cols = ['title', 'season', 'year', 'similarity']
   # Using SentenceTransformer embeddings
   free_query_embedding = get_query_embedding(query, "free")
   # From paragraphs
   free_closest_paragraphs = find_closest(free_query_embedding, "free", "paragraph.csv")
-  print(f"Closest paragraphs (free):\n{free_closest_paragraphs[cols]}\n")
+  print(f"Closest paragraphs (free):\n{get_cols(free_closest_paragraphs, paragraph_cols)}\n")
   # From talks
   free_closest_talks = find_closest(free_query_embedding, "free", "talk.csv")
-  print(f"Closest talks (free):\n{free_closest_talks[cols]}\n")
+  print(f"Closest talks (free):\n{get_cols(free_closest_talks, talk_cols)}\n")
   # From clusters
   free_closest_clusters = find_closest(free_query_embedding, "clusters", "free_3_clusters.csv")
-  print(f"Closest clusters (free):\n{free_closest_clusters[cols]}\n")
+  print(f"Closest clusters (free):\n{get_cols(free_closest_clusters, paragraph_cols)}\n")
 
   # Using OpenAI embeddings
   openai_query_embedding = get_query_embedding(query, "openai")
   # From paragraphs
   openai_closest_paragraphs = find_closest(openai_query_embedding, "openai", "paragraph.csv")
-  print(f"Closest paragraphs (openai):\n{openai_closest_paragraphs[cols]}\n")
+  print(f"Closest paragraphs (openai):\n{get_cols(openai_closest_paragraphs, paragraph_cols)}\n")
   # From talks
   openai_closest_talks = find_closest(openai_query_embedding, "openai", "talk.csv")
-  print(f"Closest talks (free):\n{openai_closest_talks[cols]}\n")
+  print(f"Closest talks (openai):\n{get_cols(openai_closest_talks, talk_cols)}\n")
   # From clusters
   openai_closest_clusters = find_closest(openai_query_embedding, "clusters", "openai_3_clusters.csv")
-  print(f"Closest clusters (free):\n{openai_closest_clusters[cols]}\n")
+  print(f"Closest clusters (openai):\n{get_cols(openai_closest_clusters, paragraph_cols)}\n")

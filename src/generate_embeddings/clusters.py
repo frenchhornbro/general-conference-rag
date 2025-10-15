@@ -74,7 +74,7 @@ def cluster_paragraph_embeddings(csv_file, k, prefix):
         similarities = cosine_similarity([cluster_centroid], embeddings)[0]
         top_indices = np.argsort(similarities)[-3:]
         top_indices = list(reversed(top_indices))  # Most similar first
-        top_paragraphs = [paragraph_texts[i] for i in top_indices]
+        top_paragraphs = "\n".join([paragraph_texts[i] for i in top_indices])
 
         cluster_data.append({
           'title': talk_info['title'],
