@@ -40,7 +40,6 @@ def generate_embeddings(csv_file, output_file_name, output_dir, col_to_embed = "
     print(f"An error occurred: \033[35m{e}\033[0m")
 
 if __name__ == "__main__":
-  timestamp = datetime.now()
   print("Start talks: ", datetime.now().strftime("%H:%M:%S"))
   generate_embeddings(f"{raw_dir}/SCRAPED_TALKS.csv", "talk", f"{embeddings_dir}/free")
   print("Start paragraphs: ", datetime.now().strftime("%H:%M:%S"))

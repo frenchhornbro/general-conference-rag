@@ -80,6 +80,9 @@ if __name__ == "__main__":
   # From talks
   free_closest_talks = find_closest(free_query_embedding, "free", "talk.csv")
   print(f"Closest talks (free):\n{get_cols(free_closest_talks, talk_cols)}\n")
+  # From titles
+  free_closest_by_title = find_closest(free_query_embedding, "free", "title.csv")
+  print(f"Closest by title (free):\n{get_cols(free_closest_by_title, talk_cols)}\n")
   # From clusters
   free_closest_clusters = find_closest(free_query_embedding, "clusters", "free_3_clusters.csv")
   print(f"Closest clusters (free):\n{get_cols(free_closest_clusters, paragraph_cols)}\n")

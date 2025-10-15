@@ -1,6 +1,6 @@
 import json
 from openai import OpenAI
-from embeddings_comparison import get_query_embedding, find_closest
+from embeddings_comparer import get_query_embedding, find_closest
 
 with open("config.json") as config:
   c = json.load(config)
