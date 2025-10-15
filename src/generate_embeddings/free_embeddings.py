@@ -45,5 +45,5 @@ if __name__ == "__main__":
   print("Start paragraphs: ", datetime.now().strftime("%H:%M:%S"))
   generate_embeddings(f"{raw_dir}/SCRAPED_PARAGRAPHS.csv", "paragraph", f"{embeddings_dir}/free")
   print("Start titles: ", datetime.now().strftime("%H:%M:%S"))
-  generate_embeddings(f"{raw_dir}/SCRAPED_TALKS.csv", "title", f"{embeddings_dir}/free", "title")
+  generate_embeddings(f"{raw_dir}/SCRAPED_TALKS.csv", "title", f"{embeddings_dir}/free", col_to_embed="title")
   print("Finish: ", datetime.now().strftime("%H:%M:%S"))

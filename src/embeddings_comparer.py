@@ -95,6 +95,9 @@ if __name__ == "__main__":
   # From talks
   openai_closest_talks = find_closest(openai_query_embedding, "openai", "talk.csv")
   print(f"Closest talks (openai):\n{get_cols(openai_closest_talks, talk_cols)}\n")
+  # From titles
+  openai_closest_by_title = find_closest(openai_query_embedding, "openai", "title.csv")
+  print(f"Closest by title (openai):\n{get_cols(openai_closest_by_title, talk_cols)}\n")
   # From clusters
   openai_closest_clusters = find_closest(openai_query_embedding, "clusters", "openai_3_clusters.csv")
   print(f"Closest clusters (openai):\n{get_cols(openai_closest_clusters, paragraph_cols)}\n")

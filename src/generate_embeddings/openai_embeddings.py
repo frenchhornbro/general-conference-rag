@@ -9,11 +9,11 @@ with open("config.json") as config:
   raw_dir = c["raw_dir"]
   embeddings_dir = c["embeddings_dir"]
 
-def generate_embeddings(csv_file, column_name, output_dir, model="text-embedding-3-small", max_tokens=300_000):
+def generate_embeddings(csv_file, column_name, output_dir, col_to_embed = "text"):
   os.makedirs(output_dir, exist_ok=True)
   try:
     df = pd.read_csv(csv_file)
-    texts = df['text'].tolist()
+    texts = df[col_to_embed].tolist()
     # Save embeddings to disk
     df['embedding'] = generate_embeddings_openai(texts)
     output_file = os.path.join(output_dir, f"{column_name}.csv")
@@ -27,4 +27,6 @@ if __name__ == "__main__":
   generate_embeddings(f"{raw_dir}/SCRAPED_TALKS.csv", "talk", f"{embeddings_dir}/openai")
   print("Start paragraphs: ", datetime.now().strftime("%H:%M:%S"))
   generate_embeddings(f"{raw_dir}/SCRAPED_PARAGRAPHS.csv", "paragraph", f"{embeddings_dir}/openai")
+  print("Start titles: ", datetime.now().strftime("%H:%M:%S"))
+  generate_embeddings(f"{raw_dir}/SCRAPED_TALKS.csv", "title", f"{embeddings_dir}/openai", col_to_embed="title")
   print("Finish: ", datetime.now().strftime("%H:%M:%S"))
